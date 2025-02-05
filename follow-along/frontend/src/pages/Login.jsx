@@ -35,7 +35,7 @@ function Login() {
               onClick={handlePasswordToggle}
               className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-600"
             >
-              {showPassword ? <IoMdEyeOff /> : <IoMdEye />}
+              {showPassword ? <IoMdEye /> : <IoMdEyeOff />}
             </button>
           </div>
         </div>
