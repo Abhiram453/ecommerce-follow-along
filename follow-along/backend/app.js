@@ -23,7 +23,7 @@ app.use("/user",userRouter)
 
 
 app.use(cors({
-    origin: "http://localhost:4534",
+    origin: "http://localhost:5174/",
     credentials: true,
     allowedHeaders: ["Content-Type", "Authorization"]
   

@@ -9,7 +9,10 @@ function Login() {
   };
 
   return (
-    <div className="max-w-md mx-auto p-5 border rounded-md mt-40">
+    <div className="flex items-center justify-center h-screen bg-cover bg-center" style={{ backgroundImage: "url('https://static.vecteezy.com/system/resources/previews/019/523/927/non_2x/abstract-digital-fingerprint-login-concept-identity-verification-illustration-with-digital-hand-wireframe-security-protection-on-a-futuristic-modern-background-vector.jpg')", backgroundSize: 'cover', backgroundPosition: 'center' }}>
+      <div className="bg-white bg-opacity-75 p-10 rounded-lg shadow-lg max-w-md w-full">
+    
+    {/* <div className="max-w-md mx-auto p-5 border rounded-md mt-40"> */}
       <h2 className="text-2xl font-semibold mb-4">Login to your account</h2>
       <form>
         <div className="mb-4">
@@ -35,7 +38,7 @@ function Login() {
               onClick={handlePasswordToggle}
               className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-600"
             >
-              {showPassword ? <IoMdEye /> : <IoMdEyeOff />}
+              {showPassword ? <IoMdEye/> : <IoMdEyeOff />}
             </button>
           </div>
         </div>
@@ -61,6 +64,10 @@ function Login() {
         Don't have an account? <a href="/signup" className="text-blue-500">Sign up</a>
       </p>
     </div>
+    </div>
+
+    // </div>
+
   );
 }
 
