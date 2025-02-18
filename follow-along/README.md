@@ -99,3 +99,25 @@ User Controller: Developed to manage user-related operations.
 Multer Configuration: Set up to handle file uploads.
 
 Routes: Updated to include endpoints for user operations and file uploads.
+
+# Milestone 5:
+Progress Summary
+Sign-Up Page: Created a user-friendly sign-up page that allows users to enter their name, email, and password.
+
+Form Validation: Implemented form validation to ensure that user inputs are in the correct format and meet the required criteria.
+
+# Milestone 6:
+1. User Signup and Activation Routes
+- **File**: `controllers/userRoute.js`
+- **Changes**:
+  - Implemented the `/signup` route to handle user registration.
+  - Added password hashing using `bcrypt`.
+  - Generated JWT tokens for account activation.
+  - Sent activation emails using the `sendmail` utility.
+  - Added the `/activation/:token` route to handle account activation via token verification.
+
+#### 2. Email Sending Utility
+- **File**: `utils/mailer.js`
+- **Changes**:
+  - Configured `nodemailer` to send emails using environment variables for SMTP credentials.
+  - Created the `sendmail` function to send activation emails.
