@@ -121,3 +121,14 @@ Form Validation: Implemented form validation to ensure that user inputs are in t
 - **Changes**:
   - Configured `nodemailer` to send emails using environment variables for SMTP credentials.
   - Created the `sendmail` function to send activation emails.
+
+  ## Milestone 7: User Login Endpoint and Password Validation
+
+### 1. User Login Endpoint
+- **File**: `controllers/userRoute.js`
+- **Changes**:
+  - Implemented the `/login` route to handle user login.
+  - Accepted user credentials (email and password).
+  - Retrieved the corresponding user from the database.
+  - Validated the password using `bcrypt`.
+  - Generated JWT tokens for authenticated users.
