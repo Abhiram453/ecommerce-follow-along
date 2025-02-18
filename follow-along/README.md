@@ -90,3 +90,12 @@ Connected Node.js server using Mongoose with the MongoDB database for managing i
 Confirmed that the backend server is correctly connected with the MongoDB database.
 - +4. Error Handling
 Put in some elementary error handling which, in the event of some errors with the API calls returns meaningful messages to users and developers to debug from easily.
+# Milestone 4: User Model, Controller, and File Upload with Multer
+Progress Summary
+User Model: Created to store user data using Mongoose.
+
+User Controller: Developed to manage user-related operations.
+
+Multer Configuration: Set up to handle file uploads.
+
+Routes: Updated to include endpoints for user operations and file uploads.
