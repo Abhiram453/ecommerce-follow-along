@@ -10,7 +10,7 @@ function Navbar() {
       <li className="inline-block mr-4 mt-10">
         <Link
           to="/"
-          className="border px-4 py-2 rounded hover:bg-gray-100 flex items-center"
+          className="border px-4 py-2 rounded bg-white flex items-center"
         >
           <IoHome className="mr-2" />
           Home
@@ -19,7 +19,7 @@ function Navbar() {
       <li className="inline-block">
         <Link
           to="/login"
-          className="border px-4 py-2 rounded hover:bg-gray-100 flex items-center"
+          className="border px-4 py-2 rounded bg-white flex items-center"
         >
           <TbLogin2 className="mr-2" />
           Login
