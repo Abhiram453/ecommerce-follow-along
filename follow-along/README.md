@@ -101,10 +101,15 @@ Multer Configuration: Set up to handle file uploads.
 Routes: Updated to include endpoints for user operations and file uploads.
 
 # Milestone 5:
-Progress Summary
-Sign-Up Page: Created a user-friendly sign-up page that allows users to enter their name, email, and password.
+Purpose of the Sign-Up Page
+The Sign-Up Page provides a user-friendly interface for new users to create an account by entering their Name, Email, and Password. It ensures data integrity and enhances user experience by validating inputs before submission.
 
-Form Validation: Implemented form validation to ensure that user inputs are in the correct format and meet the required criteria.
+Changes in JavaScript for Form Validation
+Email Validation: Checks if the email is correctly formatted.
+
+Password Validation: Ensures the password is at least 8 characters long.
+
+Preventing Form Submission: Stops form submission and displays error messages if validation fails, allowing users to correct mistakes.
 
 # Milestone 6:
 1. User Signup and Activation Routes
