@@ -137,3 +137,36 @@ Preventing Form Submission: Stops form submission and displays error messages if
   - Retrieved the corresponding user from the database.
   - Validated the password using `bcrypt`.
   - Generated JWT tokens for authenticated users.
+
+
+# Milestone 8: Product Card Component and Homepage Layout
+In this milestone, we focused on creating a reusable product card component and designing the homepage layout to display multiple product cards neatly. This milestone enhances the user experience by showcasing products effectively and maintaining a clean and organized layout.
+
+1. Product Card Component
+File: components/ProductCard.jsx
+Changes:
+Designed a reusable card component that accepts product details as props (e.g., name, image, description, price).
+Implemented the card component with a visually appealing design using Tailwind CSS.
+Added functionality to handle actions such as "More Info" and "Add to Cart".
+2. Homepage Layout
+File: pages/Home.jsx
+Changes:
+Set up a grid layout using Tailwind CSS to display multiple product cards neatly.
+Integrated the ProductPage component to fetch and display products from the backend.
+Ensured the layout is responsive and maintains a consistent design across different screen sizes.
+3. Product Page Component
+File: pages/ProductPage.jsx
+Changes:
+Created a ProductPage component to fetch product data from the backend.
+Used the ProductCard component to render each product in a grid layout.
+Implemented state management to handle product data and cart functionality.
+# Milestone 9: Product Form Creation
+In this milestone, we focused on creating a form to input all the details of a product. This form allows users to upload multiple product images and input various product details, which will eventually be saved in the database and displayed on the products homepage created in the previous milestone.
+
+1. Product Form Component
+File: pages/CreateProduct.jsx
+Changes:
+Designed a form to input product details such as name, description, category, tags, price, stock, and images.
+Implemented functionality to handle multiple image uploads.
+Used state management to handle form data and preview uploaded images.
+Styled the form using basic CSS for a clean and user-friendly interface.
