@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import axios from "axios";
 function CreateProduct() {
   const [formData, setFormData] = useState({
     email: "",
@@ -25,7 +25,7 @@ function CreateProduct() {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
     const { email, name, description, category, tags, price, stock, images } = formData;
 
@@ -40,7 +40,32 @@ function CreateProduct() {
       images
     });
 
-    // Here you can add the code to send the form data to the backend
+    const multipartFormData = new FormData();
+    multipartFormData.append("email", email);   
+    multipartFormData.append("name",name);
+    multipartFormData.append("description",description)
+    multipartFormData.append("category",category);
+    multipartFormData.append("tags",tags);
+    multipartFormData.append("price",price);
+    multipartFormData.append("stock",stock);
+    images.forEach((img) => {
+      multipartFormData.append("images", img);
+    });
+    try {
+        await axios.post("http://localhost:4534/product/create", multipartFormData, {
+          headers: {
+            "Content-Type": "multipart/form-data"
+          }
+        });
+        
+    } catch (error) {
+      console.error(error);
+        
+    }
+
+
+
+    
   };
 
   let categoryArr = ["Electronics", "Fashion", "Home Appliances", "Books"];
