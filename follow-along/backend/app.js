@@ -2,7 +2,7 @@ let express = require('express');
 
 let app = express();
 app.use(express.json());
-let Errorhandler =require('./utils/errorhandler');
+let Errorhandler =require('../utils/errorhandler');
 let errorMiddleware=require('./middleware/errorMiddleware');
 let asyncerror=require('./middleware/asyncErrorCatch');
 const userRouter = require('./controllers/userRoute');

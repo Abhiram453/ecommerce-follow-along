@@ -170,3 +170,18 @@ Designed a form to input product details such as name, description, category, ta
 Implemented functionality to handle multiple image uploads.
 Used state management to handle form data and preview uploaded images.
 Styled the form using basic CSS for a clean and user-friendly interface.
+# Milestone 10: Product Schema and Endpoint Creation
+In this milestone, we focused on defining the product schema and creating an endpoint to validate and store product details in MongoDB. This milestone ensures that only valid data is saved in the database, maintaining data integrity and preventing errors.
+
+1. Product Schema
+File: models/productModel.js
+Changes:
+Defined the structure of product data using Mongoose.
+Ensured each field has proper validation (e.g., required fields, correct data types).
+Fields included: name, description, category, tags, price, stock, images, and email.
+2. Endpoint Creation
+File: controllers/productRoute.js
+Changes:
+Built a POST endpoint to receive product data.
+Validated the received data to ensure all required fields are present and correctly formatted.
+Saved the validated product details to MongoDB

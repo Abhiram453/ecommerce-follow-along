@@ -1,12 +1,11 @@
 let express = require("express");
 const { ProductModel } = require("../model/productModel");
 const catchAsyncError = require("../middleware/catchAsyncError");
-const ErrorHandler = require("../utils/errorhandler");
+const ErrorHandler = require("../utils/errorHandler");
 const productRouter = express.Router();
-const UserModel = require("../model/userModel");
+const { UserModel } = require("../model/userModel");
 const { productUpload } = require("../middleware/multer");
 
-// Create a new product
 productRouter.post(
   "/createProduct",
   productUpload.array("images", 10),
@@ -31,7 +30,7 @@ productRouter.post(
   })
 );
 
-// Get all products
+
 productRouter.get(
   "/",
   catchAsyncError(async (req, res, next) => {
@@ -43,7 +42,7 @@ productRouter.get(
   })
 );
 
-// Get a single product by ID
+
 productRouter.get(
   "/:id",
   catchAsyncError(async (req, res, next) => {
@@ -58,7 +57,6 @@ productRouter.get(
   })
 );
 
-// Update a product by ID
 productRouter.put(
   "/:id",
   productUpload.array("images", 10),
@@ -92,7 +90,6 @@ productRouter.put(
   })
 );
 
-// Delete a product by ID
 productRouter.delete(
   "/:id",
   catchAsyncError(async (req, res, next) => {
