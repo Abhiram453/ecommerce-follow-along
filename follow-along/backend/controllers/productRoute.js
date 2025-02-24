@@ -1,9 +1,9 @@
 let express = require("express");
-const { ProductModel } = require("../model/productModel");
+const { ProductModel } = require("./controllers/productModel");
 const catchAsyncError = require("../middleware/catchAsyncError");
-const ErrorHandler = require("../utils/errorHandler");
+const ErrorHandler = require("./utils/errorHandler");
 const productRouter = express.Router();
-const { UserModel } = require("../model/userModel");
+const { UserModel } = require("./model/userModel");
 const { productUpload } = require("../middleware/multer");
 
 productRouter.post(

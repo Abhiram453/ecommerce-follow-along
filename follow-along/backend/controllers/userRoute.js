@@ -1,12 +1,12 @@
 let express = require("express");
-const { UserModel } = require("../model/userModel");
-const catchAsyncError = require("../middleware/catchAsyncError");
-const Errorhandler = require("./utils/errorhandler");
+const { UserModel } = require("../models/userModel");
+const catchAsyncError = require("../middleware/asyncErrorCatch");
+const ErrorHandler = require("../utils/errorHandler");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const { sendMail } = require("../utils/mail");
+const { sendMail } = require("../utils/mailer");
 let userRoute = express.Router();
-const upload = require("../middleware/multer");
+const { upload } = require("../middleware/multer"); // Corrected import
 require("dotenv").config();
 
 const port = process.env.PORT;
@@ -19,24 +19,23 @@ userRoute.post(
     const { name, email, password } = req.body;
 
     if (!email || !password || !name) {
-      next(new Errorhandler("name, email, and password required", 400));
+      return next(new ErrorHandler("name, email, and password required", 400));
     }
     let user = await UserModel.findOne({ email: email });
     if (user) {
-      next(new Errorhandler("user already exists", 400));
+      return next(new ErrorHandler("user already exists", 400));
     }
 
     bcrypt.hash(password, 5, async (err, hash) => {
       if (err) {
-        next(new Errorhandler("server error", 500));
+        return next(new ErrorHandler("server error", 500));
       }
       let newUser = new UserModel({ name, email, password: hash });
 
       let token = jwt.sign({ id: newUser._id }, process.env.SECRET, {
         expiresIn: 60 * 60 * 60 * 5,
       });
-      let PORT = process.env.PORT;
-      let activation_url = `http://localhost:${PORT}/user/activation/${token}`;
+      let activation_url = `http://localhost:${port}/user/activation/${token}`;
       try {
         await sendMail({
           email: newUser.email,
@@ -48,8 +47,7 @@ userRoute.post(
           .status(200)
           .json({ status: true, message: "registration successful" });
       } catch (error) {
-        next(new Errorhandler("internal server error", 500));
-        console.log(error);
+        return next(new ErrorHandler("internal server error", 500));
       }
     });
   })
@@ -60,11 +58,11 @@ userRoute.get(
   catchAsyncError(async (req, res, next) => {
     let token = req.params.token;
     if (!token) {
-      next(new Errorhandler("token not found", 404));
+      return next(new ErrorHandler("token not found", 404));
     }
     jwt.verify(token, process.env.SECRET, async (err, decoded) => {
       if (err) {
-        next(new Errorhandler("token is not valid", 400));
+        return next(new ErrorHandler("token is not valid", 400));
       }
 
       let id = decoded.id;
@@ -80,7 +78,7 @@ userRoute.post(
   upload.single("photo"),
   catchAsyncError(async (req, res, next) => {
     if (!req.file) {
-      next(new Errorhandler("File not found", 400));
+      return next(new ErrorHandler("File not found", 400));
     }
 
     res.status(200).json("Uploaded");
@@ -92,21 +90,21 @@ userRoute.post(
   catchAsyncError(async (req, res, next) => {
     const { email, password } = req.body;
     if (!email || !password) {
-      next(new Errorhandler("email and password are required", 400));
+      return next(new ErrorHandler("email and password are required", 400));
     }
 
     let user = await UserModel.findOne({ email });
     if (!user) {
-      next(new Errorhandler("please signup", 400));
+      return next(new ErrorHandler("please signup", 400));
     }
 
     if (!user.isActivated) {
-      next(new Errorhandler("please activate your account", 400));
+      return next(new ErrorHandler("please activate your account", 400));
     }
     let isMatching = await bcrypt.compare(password, user.password);
 
     if (!isMatching) {
-      next(new Errorhandler("password is incorrect", 400));
+      return next(new ErrorHandler("password is incorrect", 400));
     }
 
     let token = jwt.sign({ id: user._id }, process.env.SECRET, {
@@ -125,4 +123,4 @@ userRoute.post(
   })
 );
 
-module.exports = { userRoute };
+module.exports = userRoute;
