@@ -1,25 +1,31 @@
-let express = require('express');
-let app = express();
+const express = require("express");
+const cors = require("cors");
+const app = express();
 app.use(express.json());
-
-let ErrorHandler = require('./utils/errorHandler'); // Corrected import statement
-let errorMiddleware = require('./middleware/errorMiddleware');
-let asyncError = require('./middleware/asyncErrorCatch');
-const userRouter = require('./controllers/userRoute');
-const cors = require('cors');
+const ErrorMiddleware = require("./middleware/errorMiddleware");
+const path = require("path");
 
 app.use(cors({
-  origin: "http://localhost:5174/",
+  origin: "http://localhost:5173", // Updated to the correct origin
   credentials: true,
   allowedHeaders: ["Content-Type", "Authorization"]
 }));
 
-app.use("/user", userRouter);
+const userRouter = require('./controllers/userRoute');
+const productRouter = require("./controllers/productRoute");
 
-app.get("/test", (req, res) => {
-  res.send("Hello World");
+app.get("/test", async (req, res) => {
+  res.send("hello.....");
 });
 
-app.use(errorMiddleware);
+console.log(path.join(__dirname, 'uploadproducts'));
+
+app.use('/profile-photo', express.static(path.join(__dirname, 'uploads')));
+app.use('/products-photo', express.static(path.join(__dirname, 'uploadproducts')));
+
+app.use("/user", userRouter);
+app.use("/products", productRouter);
+
+app.use(ErrorMiddleware);
 
 module.exports = app;

@@ -1,11 +1,11 @@
 let express = require("express");
-const { ProductModel } = require("./controllers/productModel");
-const catchAsyncError = require("../middleware/catchAsyncError");
-const ErrorHandler = require("./utils/errorHandler");
+const { ProductModel } = require("../models/productModel");
+const catchAsyncError = require("../middleware/asyncErrorCatch");
+const ErrorHandler = require("../utils/errorHandler");
 const productRouter = express.Router();
-const { UserModel } = require("./model/userModel");
 const { productUpload } = require("../middleware/multer");
 
+// Create a new product
 productRouter.post(
   "/createProduct",
   productUpload.array("images", 10),
@@ -30,7 +30,7 @@ productRouter.post(
   })
 );
 
-
+// Get all products
 productRouter.get(
   "/",
   catchAsyncError(async (req, res, next) => {
@@ -38,68 +38,6 @@ productRouter.get(
     res.status(200).json({
       success: true,
       products,
-    });
-  })
-);
-
-
-productRouter.get(
-  "/:id",
-  catchAsyncError(async (req, res, next) => {
-    const product = await ProductModel.findById(req.params.id);
-    if (!product) {
-      return next(new ErrorHandler("Product not found", 404));
-    }
-    res.status(200).json({
-      success: true,
-      product,
-    });
-  })
-);
-
-productRouter.put(
-  "/:id",
-  productUpload.array("images", 10),
-  catchAsyncError(async (req, res, next) => {
-    const { name, description, category, tags, price, stock } = req.body;
-    const images = req.files.map((file) => file.path);
-
-    const updatedProduct = await ProductModel.findByIdAndUpdate(
-      req.params.id,
-      {
-        name,
-        description,
-        category,
-        tags,
-        price,
-        stock,
-        images,
-      },
-      { new: true, runValidators: true }
-    );
-
-    if (!updatedProduct) {
-      return next(new ErrorHandler("Product not found", 404));
-    }
-
-    res.status(200).json({
-      success: true,
-      message: "Product updated successfully",
-      product: updatedProduct,
-    });
-  })
-);
-
-productRouter.delete(
-  "/:id",
-  catchAsyncError(async (req, res, next) => {
-    const product = await ProductModel.findByIdAndDelete(req.params.id);
-    if (!product) {
-      return next(new ErrorHandler("Product not found", 404));
-    }
-    res.status(200).json({
-      success: true,
-      message: "Product deleted successfully",
     });
   })
 );

@@ -1,178 +1,168 @@
-import React, { useState } from "react";
-import axios from "axios";
+import axios from 'axios';
+import React, { useState } from 'react';
+import { IoIosAddCircleOutline } from 'react-icons/io';
+
 function CreateProduct() {
-  const [formData, setFormData] = useState({
-    email: "",
-    name: "",
-    description: "",
-    category: "",
-    tags: "",
-    price: "",
-    stock: "",
-    images: [],
-    previewImg: []
-  });
-
-  const handleChange = (e) => {
-    if (e.target.name === "images") {
-      setFormData({
-        ...formData,
-        images: [...formData.images, e.target.files[0]],
-        previewImg: [...formData.previewImg, URL.createObjectURL(e.target.files[0])]
-      });
-    } else {
-      setFormData({ ...formData, [e.target.name]: e.target.value });
-    }
-  };
-
-  const handleSubmit = async(e) => {
-    e.preventDefault();
-    const { email, name, description, category, tags, price, stock, images } = formData;
-
-    console.log({
-      email,
-      name,
-      description,
-      category,
-      tags,
-      price,
-      stock,
-      images
+    const [formData, setFormData] = useState({
+        email: "",
+        name: "",
+        description: "",
+        category: "",
+        tags: [],
+        price: "",
+        stock: "",
+        images: [],
+        previewImg: []
     });
 
-    const multipartFormData = new FormData();
-    multipartFormData.append("email", email);   
-    multipartFormData.append("name",name);
-    multipartFormData.append("description",description)
-    multipartFormData.append("category",category);
-    multipartFormData.append("tags",tags);
-    multipartFormData.append("price",price);
-    multipartFormData.append("stock",stock);
-    images.forEach((img) => {
-      multipartFormData.append("images", img);
-    });
-    try {
-        await axios.post("http://localhost:4534/product/create", multipartFormData, {
-          headers: {
-            "Content-Type": "multipart/form-data"
-          }
-        });
-        
-    } catch (error) {
-      console.error(error);
-        
-    }
+    const handleChange = (e) => {
+        if (e.target.name === "tags") {
+            let tagArr = e.target.value.split(",");
+            let trimmedTagArr = tagArr.map((ele) => ele.trim());
+            console.log(trimmedTagArr);
+            setFormData({ ...formData, tags: trimmedTagArr });
+        } else if (e.target.name === "images") {
+            const files = e.target.files;
+            const imgUrls = Array.from(files).map(file => URL.createObjectURL(file));
+            setFormData(prevState => ({
+                ...prevState,
+                images: [...prevState.images, ...files],
+                previewImg: [...prevState.previewImg, ...imgUrls]
+            }));
+        } else {
+            setFormData(prevState => ({
+                ...prevState,
+                [e.target.name]: e.target.value
+            }));
+        }
+    };
 
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const { email, name, description, category, tags, price, stock, images } = formData;
 
+        if (!email || !name || !description || !category || !price || !stock) {
+            alert("Please fill in all required fields");
+            return;
+        }
 
-    
-  };
+        console.log({
+            email, name, description, category, tags, price, stock, images
+        }, "form data");
 
-  let categoryArr = ["Electronics", "Fashion", "Home Appliances", "Books"];
+        const multiPartFormData = new FormData();
+        multiPartFormData.append("name", name);
+        multiPartFormData.append("description", description);
+        multiPartFormData.append("category", category);
+        multiPartFormData.append("tags", tags);
+        multiPartFormData.append("price", price);
+        multiPartFormData.append("stock", stock);
+        multiPartFormData.append("email", email);
 
-  return (
-    <div style={{ maxWidth: "400px", margin: "auto", padding: "20px", border: "1px solid black", borderRadius: "8px" }}>
-      <h2 style={{ textAlign: "center" }}>Create Product</h2>
-      <form style={{ display: "flex", flexDirection: "column", gap: "10px" }} onSubmit={handleSubmit}>
-        <label htmlFor="email">Email</label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          placeholder="Enter your email"
-          value={formData.email}
-          onChange={handleChange}
-          style={{ padding: "8px", border: "1px solid black" }}
-        />
+        if (Array.isArray(images)) {
+            images.forEach(image => {
+                multiPartFormData.append("images", image);
+            });
+        }
 
-        <label htmlFor="name">Name</label>
-        <input
-          type="text"
-          id="name"
-          name="name"
-          placeholder="Enter your Name"
-          value={formData.name}
-          onChange={handleChange}
-          style={{ padding: "8px", border: "1px solid black" }}
-        />
+        try {
+            const response = await axios.post("http://localhost:4534/product/create-product", multiPartFormData, {
+                headers: {
+                    "Content-Type": "multipart/form-data"
+                },
+            });
 
-        <label htmlFor="description">Description</label>
-        <textarea
-          id="description"
-          name="description"
-          placeholder="Description"
-          value={formData.description}
-          onChange={handleChange}
-          style={{ padding: "8px", border: "1px solid black" }}
-        ></textarea>
+            if (response.status === 201) {
+                console.log(response);
+                alert("Product Created Successfully");
+                setFormData({
+                    email: "",
+                    name: "",
+                    description: "",
+                    category: "",
+                    tags: [],
+                    price: "",
+                    stock: "",
+                    images: [],
+                    previewImg: []
+                });
+            }
+        } catch (error) {
+            console.log("Error", error);
+            alert("Product is Not Created");
+        }
+    };
 
-        <label htmlFor="category">Category</label>
-        <select
-          id="category"
-          name="category"
-          value={formData.category}
-          onChange={handleChange}
-          style={{ padding: "8px", border: "1px solid black" }}
-        >
-          <option>Choose a category</option>
-          {categoryArr.map((cat, index) => (
-            <option key={index} value={cat}>
-              {cat}
-            </option>
-          ))}
-        </select>
+    let categoryArr = ["Electronic", "Groceries", "Fashion", "Dairy"];
 
-        <label htmlFor="tags">Tags</label>
-        <input
-          type="text"
-          id="tags"
-          name="tags"
-          placeholder="Enter product tag"
-          value={formData.tags}
-          onChange={handleChange}
-          style={{ padding: "8px", border: "1px solid black" }}
-        />
+    return (
+        <div className='flex justify-center items-center min-h-screen bg-cover bg-center' style={{ backgroundImage: "url('https://source.unsplash.com/1600x900/?office,technology')" }}>
+            <div className='w-full max-w-lg bg-white p-6 rounded-lg shadow-lg backdrop-blur-md bg-opacity-90'>
+                <h2 className='text-2xl font-bold text-gray-800 mb-6 text-center'>Create a New Product</h2>
+                <form onSubmit={handleSubmit} className='space-y-4'>
+                    <div>
+                        <label className='block font-medium text-gray-700'>Email</label>
+                        <input className='border p-2 w-full rounded-md focus:ring-2 focus:ring-blue-500' type="email" placeholder='Enter your email' name="email" value={formData.email} onChange={handleChange} required />
+                    </div>
 
-        <label htmlFor="price">Price</label>
-        <input
-          type="number"
-          id="price"
-          name="price"
-          placeholder="Price"
-          value={formData.price}
-          onChange={handleChange}
-          style={{ padding: "8px", border: "1px solid black" }}
-        />
+                    <div>
+                        <label className='block font-medium text-gray-700'>Name</label>
+                        <input className='border p-2 w-full rounded-md focus:ring-2 focus:ring-blue-500' type="text" placeholder='Enter product name' name="name" value={formData.name} onChange={handleChange} required />
+                    </div>
 
-        <label htmlFor="stock">Stock</label>
-        <input
-          type="number"
-          id="stock"
-          name="stock"
-          placeholder="Stock"
-          value={formData.stock}
-          onChange={handleChange}
-          style={{ padding: "8px", border: "1px solid black" }}
-        />
+                    <div>
+                        <label className='block font-medium text-gray-700'>Description</label>
+                        <textarea className='border p-2 w-full rounded-md focus:ring-2 focus:ring-blue-500' name="description" value={formData.description} onChange={handleChange} required></textarea>
+                    </div>
 
-        <label htmlFor="images">Upload Photo</label>
-        <input
-          type="file"
-          id="images"
-          name="images"
-          onChange={handleChange}
-          style={{ padding: "8px", border: "1px solid black" }}
-        />
+                    <div>
+                        <label className='block font-medium text-gray-700'>Category</label>
+                        <select className='border p-2 w-full rounded-md focus:ring-2 focus:ring-blue-500' name="category" value={formData.category} onChange={handleChange} required>
+                            <option value="">Choose a category</option>
+                            {categoryArr.map((ele, index) => (
+                                <option key={index} value={ele}>{ele}</option>
+                            ))}
+                        </select>
+                    </div>
 
-        <button
-          type="submit"
-          style={{ padding: "10px", color: "black", border: "none", backgroundColor: "lightblue", cursor: "pointer" }}
-        >
-          Submit
-        </button>
-      </form>
-    </div>
-  );
+                    <div>
+                        <label className='block font-medium text-gray-700'>Tags <i className='text-red-100'>add multiple tags separated by comma</i></label>
+                        <input className='border p-2 w-full rounded-md focus:ring-2 focus:ring-blue-500' type="text" placeholder='Enter product tag' name="tags" value={formData.tags.join(", ")} onChange={handleChange} />
+                    </div>
+
+                    <div className='flex space-x-4'>
+                        <div className='w-1/2'>
+                            <label className='block font-medium text-gray-700'>Price</label>
+                            <input className='border p-2 w-full rounded-md focus:ring-2 focus:ring-blue-500' type="number" name="price" value={formData.price} onChange={handleChange} required />
+                        </div>
+                        <div className='w-1/2'>
+                            <label className='block font-medium text-gray-700'>Stock</label>
+                            <input className='border p-2 w-full rounded-md focus:ring-2 focus:ring-blue-500' type="number" name="stock" value={formData.stock} onChange={handleChange} required />
+                        </div>
+                    </div>
+
+                    <div>
+                        <label className='block font-medium text-gray-700'>Upload Photo</label>
+                        <input className='hidden' type="file" name="images" id='upload' multiple onChange={handleChange} />
+                        <label htmlFor="upload" className='cursor-pointer flex items-center space-x-2 text-blue-500 hover:text-blue-700'>
+                            <IoIosAddCircleOutline size={24} />
+                            <span>Add Images</span>
+                        </label>
+                    </div>
+
+                    <div className='flex flex-wrap gap-2 mt-2'>
+                        {formData.previewImg.map((img, index) => (
+                            <img key={index} src={img} alt={`Preview ${index}`} className='w-20 h-20 object-cover rounded-md shadow-md' />
+                        ))}
+                    </div>
+
+                    <button type="submit" className='w-full bg-blue-600 text-white py-2 rounded-md font-semibold hover:bg-blue-700 transition'>
+                        Submit
+                    </button>
+                </form>
+            </div>
+        </div>
+    );
 }
 
 export default CreateProduct;
