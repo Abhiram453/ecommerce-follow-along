@@ -1,54 +1,60 @@
 let express = require("express");
-const { ProductModel } = require("../models/productModel");
+const { UserModel } = require("../models/userModel");
 const catchAsyncError = require("../middleware/asyncErrorCatch");
 const ErrorHandler = require("../utils/errorHandler");
-const productRouter = express.Router();
-const { UserModel } = require("../models/userModel");
-const { productUpload } = require("../middleware/multer");
-let path = require('path');
+const userRouter = express.Router();
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
-
-productRouter.post(
-  "/create-product",
-  productUpload.array("images", 10),
+// User Signup
+userRouter.post(
+  "/signup",
   catchAsyncError(async (req, res, next) => {
-    const { email, name, description, category, tags, price, stock } = req.body;
-    const images = req.files.map((file) => file.path);
-    console.log(email, name, description, category, tags, price, images);
+    const { email, password, name } = req.body;
 
-    if (!email || !name || !description || !category || !tags || !price || !images || !stock) {
+    if (!email || !password || !name) {
       return next(new ErrorHandler("All fields are required", 400));
     }
 
     let user = await UserModel.findOne({ email });
-    if (!user) {
-      return next(new ErrorHandler("User does not exist", 404));
+    if (user) {
+      return next(new ErrorHandler("User already exists", 400));
     }
 
-    let product = new ProductModel({ email, name, description, category, tags, price, images, stock });
+    const hashedPassword = await bcrypt.hash(password, 10);
+    user = new UserModel({ email, password: hashedPassword, name });
 
-    await product.save();
-    res.status(201).json({ message: "Product created successfully" });
+    await user.save();
+    res.status(201).json({ message: "User created successfully" });
   })
 );
 
-
-productRouter.get(
-  "/allproduct",
+// User Login
+userRouter.post(
+  "/login",
   catchAsyncError(async (req, res, next) => {
-    let allProduct = await ProductModel.find();
+    const { email, password } = req.body;
 
-    if (allProduct && allProduct.length > 0) {
-      allProduct = allProduct.map((product) => {
-        if (product.images && product.images.length > 0) {
-          product.images = product.images.map((ele) => path.basename(ele));
-        }
-        return product;
-      });
+    if (!email || !password) {
+      return next(new ErrorHandler("All fields are required", 400));
     }
 
-    res.status(200).json({ status: true, message: allProduct });
+    const user = await UserModel.findOne({ email });
+    if (!user) {
+      return next(new ErrorHandler("Invalid email or password", 401));
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return next(new ErrorHandler("Invalid email or password", 401));
+    }
+
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "1d",
+    });
+
+    res.status(200).json({ token });
   })
 );
 
-module.exports = productRouter;
+module.exports = userRouter;

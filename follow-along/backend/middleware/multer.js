@@ -3,7 +3,6 @@ let path = require("path");
 
 console.log(path.join(__dirname, "../upload"), "****");
 
-// General storage configuration
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, path.join(__dirname, "../upload"));
@@ -14,7 +13,7 @@ const storage = multer.diskStorage({
   }
 });
 
-// Product-specific storage configuration
+
 const productStorage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, path.join(__dirname, "../uploadproducts"));

@@ -185,3 +185,47 @@ Changes:
 Built a POST endpoint to receive product data.
 Validated the received data to ensure all required fields are present and correctly formatted.
 Saved the validated product details to MongoDB
+# Milestone 11: Fetching and Displaying Products from MongoDB
+In this milestone, we focused on creating an endpoint to fetch all product data from MongoDB and send it to the frontend. We then wrote a function in the frontend to receive this data and display it dynamically using the ProductCard component created earlier.
+
+This milestone enhances the user experience by showcasing products effectively and maintaining a clean and organized layout.
+
+1. Endpoint to Fetch All Products Data
+File: controllers/productRoute.js
+Changes:
+Implemented the /allproduct route to fetch all products from MongoDB.
+Processed image paths to ensure they are correctly formatted.
+Sent the fetched product data to the frontend.
+2. Function in the Frontend to Get All Data
+File: pages/ProductPage.jsx
+Changes:
+Created a function to fetch all product data from the backend.
+Used the axios library to make the GET request.
+Stored the fetched data in the component's state.
+3. Display the Data Dynamically Using the ProductCard Component
+File: components/ProductCard.jsx
+Changes:
+Ensured the ProductCard component is correctly set up to display product details.
+Used props to pass product data to the component.
+# Milestone 12: Fetching and Displaying User-Specific Products from MongoDB
+In this milestone, we will focus on creating an endpoint to fetch all product data associated with a specific user's email from MongoDB and send it to the frontend. We will then write a function in the frontend to receive this data and display it dynamically using the ProductCard component created earlier.
+
+This milestone enhances the user experience by allowing users to view products specific to their account, maintaining a personalized and organized layout.
+
+1. Endpoint to Fetch User-Specific Products Data
+File: controllers/productRoute.js
+Changes:
+Implemented the /user-products route to fetch all products associated with a specific user's email from MongoDB.
+Processed image paths to ensure they are correctly formatted.
+Sent the fetched product data to the frontend.
+2. Function in the Frontend to Get User-Specific Data
+File: pages/UserProductsPage.jsx
+Changes:
+Created a function to fetch all product data associated with a specific user's email from the backend.
+Used the axios library to make the GET request.
+Stored the fetched data in the component's state.
+3. Display the Data Dynamically Using the ProductCard Component
+File: components/ProductCard.jsx
+Changes:
+Ensured the ProductCard component is correctly set up to display product details.
+Used props to pass product data to the component.
