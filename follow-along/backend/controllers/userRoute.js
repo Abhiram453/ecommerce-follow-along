@@ -1,6 +1,6 @@
 let express = require("express");
 const { UserModel } = require("../models/userModel");
-const catchAsyncError = require("../middleware/asyncErrorCatch");
+const catchAsyncError = require("../middleware/catchAsyncError");
 const ErrorHandler = require("../utils/errorHandler");
 const userRouter = express.Router();
 const bcrypt = require("bcryptjs");

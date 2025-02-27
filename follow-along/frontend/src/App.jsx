@@ -6,20 +6,18 @@ import Login from './pages/Login';
 import Signup from './pages/signup';
 import CreateProduct from './pages/createProduct';
 import ProductPage from './pages/productPage';
+import SellerProductPage from './pages/sellerProduct';
 
 function App() {
   return (
     <Router>
       <Navbar />
       <Routes>
-        <Route path="/products" element={<ProductPage />} />
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/create" element={<CreateProduct />} />
+        <Route path="/products" element={<ProductPage />} />
+        <Route path="/modify" element={<SellerProductPage />} />
       </Routes>
     </Router>
-  );
-}
-
-export default App;

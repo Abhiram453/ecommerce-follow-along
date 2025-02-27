@@ -229,3 +229,48 @@ File: components/ProductCard.jsx
 Changes:
 Ensured the ProductCard component is correctly set up to display product details.
 Used props to pass product data to the component.
+# Sure, based on the structure and format of the previous milestones in your README.md file, here is the content for Milestone 13:
+
+# Milestone 13: Updating Existing Product Data
+In this milestone, we focused on creating an endpoint to update existing product data in MongoDB. We also added an edit button to the product card in the frontend. When the edit button is clicked, the product data is sent to a form, which is auto-filled with the existing data, allowing the user to edit and save the changes.
+
+This milestone enhances the user experience by allowing users to update product details, ensuring that the product information remains accurate and up-to-date.
+
+1. Endpoint to Update Product Data
+File: controllers/productRoute.js Changes:
+
+Implemented the /update/:id route to receive new data and update the existing product data in MongoDB.
+Validated the received data to ensure all required fields are present and correctly formatted.
+Updated the product details in MongoDB.
+2. Function in the Frontend to Handle Edit Button Click
+File: components/ProductCard.jsx Changes:
+
+Added an edit button to the product card.
+When the edit button is clicked, the product data is sent to the form and auto-filled with the existing data.
+3. Auto-Fill Form with Existing Data and Allow Editing
+File: pages/CreateProduct.jsx Changes:
+
+Created a function to handle the edit button click and auto-fill the form with the existing product data.
+Allowed users to edit the product details and save the changes.
+Used the axios library to make the PUT request to update the product data in the backend
+# Based on the structure and format of the previous milestones in your README.md file, here is the content for Milestone 14:
+
+### Milestone 14: Deleting Product Data
+
+In this milestone, we focused on creating an endpoint to delete product data from MongoDB using the product ID. We also added a delete button to the product card in the frontend. When the delete button is clicked, the product ID is sent to the server endpoint to delete the product.
+
+This milestone enhances the user experience by allowing users to remove products, ensuring that the product list remains accurate and up-to-date.
+
+#### 1. Endpoint to Delete Product Data
+**File**: `controllers/productRoute.js`
+**Changes**:
+- Implemented the `/delete/:id` route to delete product data from MongoDB using the product ID.
+- Validated the product ID to ensure it is correctly formatted.
+- Deleted the product from MongoDB.
+
+#### 2. Function in the Frontend to Handle Delete Button Click
+**File**: `components/ProductCard.jsx`
+**Changes**:
+- Added a delete button to the product card.
+- When the delete button is clicked, the product ID is sent to the server endpoint to delete the product.
+

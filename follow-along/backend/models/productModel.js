@@ -27,7 +27,8 @@ const productSchema = new mongoose.Schema({
   },
   images: {
     type: [String],
-    required: [true, "Please upload product images"]
+    required: [true, "Please upload product images"],
+    default: []
   },
   email: {
     type: String,
