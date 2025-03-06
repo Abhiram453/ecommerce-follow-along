@@ -1,0 +1,15 @@
+meta {
+  name: createProducts
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:4534/products/create-product
+  body: multipartForm
+  auth: none
+}
+
+body:multipart-form {
+  images: @file(C:\Users\prasa\Downloads\satoru-gojo-black-3840x2160-14684.png)
+}
