@@ -1,6 +1,6 @@
 {
   "version": "1",
-  "name": "uploadproducts",
+  "name": "brunoapitest",
   "type": "collection",
   "ignore": [
     "node_modules",

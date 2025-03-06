@@ -274,3 +274,19 @@ This milestone enhances the user experience by allowing users to remove products
 - Added a delete button to the product card.
 - When the delete button is clicked, the product ID is sent to the server endpoint to delete the product.
 
+# Milestone 15: Creating a Responsive Navbar
+In this milestone, we focused on enhancing the existing Navbar.jsx component to include links to all pages and making the Navbar responsive to all screen sizes. We ensured that the Navbar component is included in all pages to provide smooth and easy navigation throughout the application.
+
+This milestone enhances the user experience by providing a consistent and responsive navigation bar, making it easier for users to navigate between different sections of the application.
+
+1. Enhancing the Navbar Component
+File: pages/Navbar.jsx Changes:
+
+Added links to Home, My Products, Add Product, and Cart pages.
+Used the Link component from react-router-dom for navigation.
+Implemented a responsive design using Tailwind CSS and React state management.
+2. Adding the Navbar Component to All Pages
+File: App.jsx Changes:
+
+Imported the Navbar component and included it in the main application layout.
+Ensured that the Navbar component is rendered on all pages.

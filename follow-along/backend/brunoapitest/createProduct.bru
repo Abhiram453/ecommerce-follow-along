@@ -5,7 +5,9 @@ meta {
 }
 
 post {
-  url: http://localhost:4534/products/createProduct
-  body: multipartForm
+  url: http://localhost:4534/products/create-product
+  body: multipart-form {
+    photo: @file(C:/Abhi Ram photos/223.jpg)
+  }
   auth: none
 }
