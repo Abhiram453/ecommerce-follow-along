@@ -328,3 +328,21 @@ File: controllers/userRoute.js Changes:
 Implemented the /cart endpoint to receive and store product details in the user's cart.
 Validated the product ID and quantity to ensure they are correctly formatted.
 Updated the user's cart in MongoDB.
+
+
+
+# Milestone 18: Creating Backend Endpoint for Cart Page
+In this milestone, we focused on creating backend endpoints for the cart page. We wrote an endpoint to get products inside the cart for a user. This milestone enhances the user experience by allowing users to view the products they have added to their cart.
+
+1. Creating Backend Endpoint for Cart Page
+File: controllers/productRoute.js Changes:
+
+Implemented the /cart endpoint to receive and store product details in the user's cart.
+Validated the product ID and quantity to ensure they are correctly formatted.
+Updated the user's cart in MongoDB.
+2. Writing an Endpoint to Get Products Inside Cart for User
+File: controllers/productRoute.js Changes:
+
+Implemented the /cart endpoint to get the products inside the cart for a user.
+Validated the user ID to ensure it is correctly formatted.
+Retrieved the user's cart from MongoDB and populated the product details.
