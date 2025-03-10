@@ -290,3 +290,41 @@ File: App.jsx Changes:
 
 Imported the Navbar component and included it in the main application layout.
 Ensured that the Navbar component is rendered on all pages.
+
+# Milestone 16: Displaying All Product Data
+In this milestone, we focused on creating a new page that displays all the product data fetched from the backend. This page provides a comprehensive view of all available products, enhancing the user experience by allowing users to browse through the entire product catalog.
+
+1. Creating the All Products Page
+File: pages/AllProducts.jsx Changes:
+
+Created a new page component to display all product data.
+Fetched product data from the backend using Axios.
+Used the ProductCard component to render each product in a grid layout.
+Ensured the layout is responsive and maintains a consistent design across different screen sizes.
+2. Fetching Product Data from the Backend
+File: pages/AllProducts.jsx Changes:
+
+Created a function to fetch all product data from the backend.
+Used the Axios library to make the GET request.
+Stored the fetched data in the component's state.
+3. Displaying the Data Using the ProductCard Component
+File: components/ProductCard.jsx Changes:
+
+Ensured the ProductCard component is correctly set up to display product details.
+Used props to pass product data to the component.
+
+
+# Milestone 17: Implementing Cart Functionality
+In this milestone, we focused on creating the cart schema to store products and writing an endpoint to receive and store product details in the cart. This milestone enhances the user experience by allowing users to add products to their cart and manage their shopping list.
+
+1. Writing the Cart Schema
+File: models/userModel.js Changes:
+
+Defined the cartSchema to store cart items with product ID and quantity.
+Integrated the cartSchema into the userSchema.
+2. Writing an Endpoint to Store Product Details in Cart
+File: controllers/userRoute.js Changes:
+
+Implemented the /cart endpoint to receive and store product details in the user's cart.
+Validated the product ID and quantity to ensure they are correctly formatted.
+Updated the user's cart in MongoDB.
