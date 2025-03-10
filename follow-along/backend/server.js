@@ -1,14 +1,18 @@
-let app =require('./app');
+require("dotenv").config();
+const app = require('./app');
 const connection = require('./db/connection');
 
+const port = process.env.PORT || 4534;
 
+app.get("/testing", async (req, res) => {
+  res.send("hello");
+});
 
-app.listen(4534,async()=>{
-    try {
-        await connection
-        console.log('Server is running on http://localhost:4534'); 
-    } catch (error) {
-        console.log('Error: ',error)
-    }
-    
-})
+connection
+  .then(() => {
+    console.log("✅ Successfully connected to MongoDB");
+    app.listen(port, () => console.log(`🚀 App is running on http://localhost:${port}`));
+  })
+  .catch((error) => {
+    console.error("❌ MongoDB connection error:", error);
+  });

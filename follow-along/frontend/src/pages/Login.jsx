@@ -1,19 +1,24 @@
 import React, { useState } from "react";
-import { IoMdEyeOff, IoMdEye } from "react-icons/io";
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-function Login() {
+function Login(props) {
   const navigate = useNavigate();
-  const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState("");
-  const [data, setData] = useState({ email: "", password: "" });
 
-  const handlePasswordToggle = () => {
-    setShowPassword(!showPassword);
+  const [hide, setHide] = useState(true);
+  const [error, setError] = useState("");
+  const [data, setData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const handleHide = () => {
+    setHide(!hide);
   };
 
   const handleForm = (e) => {
+    setError("");
     setData({ ...data, [e.target.name]: e.target.value });
   };
 
@@ -26,10 +31,15 @@ function Login() {
     }
 
     try {
-      const response = await axios.post("http://localhost:4534/user/login", { email, password });
+      const response = await axios.post(
+        "http://localhost:4534/user/login",
+        { email, password },
+        { withCredentials: true }
+      );
       console.log("Login successful", response.data);
       navigate("/");
     } catch (error) {
+      console.log(error);
       setError(error.response?.data?.message || "An error occurred");
     }
   };
@@ -56,7 +66,7 @@ function Login() {
             <label htmlFor="password" className="block mb-2">Password</label>
             <div className="relative">
               <input
-                type={showPassword ? "text" : "password"}
+                type={hide ? "password" : "text"}
                 id="password"
                 name="password"
                 className="w-full p-2 border rounded pr-10"
@@ -66,10 +76,10 @@ function Login() {
               />
               <button
                 type="button"
-                onClick={handlePasswordToggle}
+                onClick={handleHide}
                 className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-600"
               >
-                {showPassword ? <IoMdEye /> : <IoMdEyeOff />}
+                {hide ? <FaRegEye /> : <FaRegEyeSlash />}
               </button>
             </div>
           </div>
