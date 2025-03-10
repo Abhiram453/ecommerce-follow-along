@@ -14,22 +14,22 @@ productRouter.post(
   productUpload.array("images", 10),
   catchAsyncError(async (req, res, next) => {
     const { email, name, description, category, tags, price, stock } = req.body;
-    const images = req.files.map((file) => `/products-photo/${path.basename(file.path)}`);
-    console.log(email, name, description, category, tags, price, images);
+    const images = req.files.map((file) => path.basename(file.path));
+    console.log(email, name, description, category, tags, price, images, "////");
 
-    if (!email || !name || !description || !category || !tags || !price || !images.length || !stock) {
+    if (!email || !name || !description || !category || !tags || !price || !images || !stock) {
       return next(new ErrorHandler("All fields are required", 400));
     }
-
     let user = await UserModel.findOne({ email });
+
+    console.log(email);
     if (!user) {
       return next(new ErrorHandler("User does not exist", 404));
     }
-
     let product = new ProductModel({ email, name, description, category, tags, price, images, stock });
-    await product.save();
 
-    res.status(201).json({ message: "Product created successfully", product });
+    await product.save();
+    res.status(201).json({ message: "Product created successfully" });
   })
 );
 
@@ -37,16 +37,6 @@ productRouter.get(
   "/allproduct",
   catchAsyncError(async (req, res, next) => {
     let allProduct = await ProductModel.find();
-
-    if (allProduct.length > 0) {
-      allProduct = allProduct.map((product) => {
-        if (product.images && product.images.length > 0) {
-          product.images = product.images.map((ele) => `http://localhost:4534${ele}`);
-        }
-        return product;
-      });
-    }
-
     res.status(200).json({ status: true, message: allProduct });
   })
 );
@@ -55,15 +45,7 @@ productRouter.get(
   "/individualproduct/:id",
   catchAsyncError(async (req, res, next) => {
     let id = req.params.id;
-    if (!id || !mongoose.Types.ObjectId.isValid(id)) {
-      return next(new ErrorHandler("Invalid or missing Product ID", 400));
-    }
-
     let product = await ProductModel.findById(id);
-    if (!product) {
-      return next(new ErrorHandler("Product not found", 404));
-    }
-
     res.status(200).json({ status: true, message: product });
   })
 );
@@ -71,17 +53,19 @@ productRouter.get(
 productRouter.delete(
   "/delete/:id",
   catchAsyncError(async (req, res, next) => {
+    console.log("kjmk");
     let id = req.params.id;
-    if (!id || !mongoose.Types.ObjectId.isValid(id)) {
-      return next(new ErrorHandler("Invalid or missing Product ID", 400));
+    if (!id) {
+      return next(new ErrorHandler("ID is not passed", 400));
     }
-
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return next(new ErrorHandler("Invalid ObjectId", 400));
+    }
     const deletedProduct = await ProductModel.findByIdAndDelete(id);
     if (!deletedProduct) {
       return next(new ErrorHandler("Product not found", 404));
     }
-
-    res.status(200).json({ status: true, message: "Product deleted successfully" });
+    res.status(200).json({ status: true, message: "Deleted successfully" });
   })
 );
 
@@ -90,25 +74,28 @@ productRouter.put(
   productUpload.array("images", 10),
   catchAsyncError(async (req, res, next) => {
     let id = req.params.id;
-    if (!id || !mongoose.Types.ObjectId.isValid(id)) {
-      return next(new ErrorHandler("Invalid or missing Product ID", 400));
+    if (!id) {
+      return next(new ErrorHandler("ID is not passed", 400));
+    }
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return next(new ErrorHandler("Invalid ObjectId", 400));
     }
 
     let { email, name, description, category, tags, price, stock, images } = req.body;
-    const newImages = req.files.map((file) => `/products-photo/${path.basename(file.path)}`);
-    images = images ? (Array.isArray(images) ? images : [images]) : [];
-
-    const updatedProduct = await ProductModel.findByIdAndUpdate(
-      id,
-      { email, name, description, category, tags, price, stock, images: [...newImages, ...images] },
-      { new: true, runValidators: true }
-    );
-
-    if (!updatedProduct) {
-      return next(new ErrorHandler("Product not found", 404));
+    const imagesArr = req.files.map((file) => path.basename(file.path));
+    console.log(images, imagesArr);
+    if (!images) {
+      images = [];
+    } else {
+      images = Array.isArray(images) ? images : [images];
     }
-
-    res.status(200).json({ message: "Product updated successfully", updatedProduct });
+    console.log(images, imagesArr, "88");
+    const updated = await ProductModel.findByIdAndUpdate(
+      id,
+      { email, name, description, category, tags, price, stock, images: [...imagesArr, ...images] },
+      { new: true }
+    );
+    res.status(200).json({ status: true, message: "Updated successfully", data: updated });
   })
 );
 
@@ -136,9 +123,7 @@ productRouter.post(
     if (!product) {
       return next(new ErrorHandler("Product not found", 404));
     }
-    const cartItemIndex = user.cart.findIndex(
-      (item) => item.productId.toString() === productId
-    );
+    const cartItemIndex = user.cart.findIndex((item) => item.productId.toString() === productId);
 
     if (cartItemIndex > -1) {
       user.cart[cartItemIndex].quantity += quantity;
@@ -153,6 +138,27 @@ productRouter.post(
       message: "Cart updated successfully",
       cart: user.cart,
     });
+  })
+);
+
+productRouter.get(
+  "/cart",
+  auth,
+  catchAsyncError(async (req, res, next) => {
+    let userID = req.user_id;
+    if (!userID) {
+      return next(new ErrorHandler("User ID is required", 404));
+    }
+    if (!mongoose.Types.ObjectId.isValid(userID)) {
+      return next(new ErrorHandler("Invalid userId", 400));
+    }
+
+    let cart = await UserModel.findById(userID).populate({
+      path: "cart.productId",
+      model: "Product",
+    });
+
+    res.status(200).json({ status: true, message: cart });
   })
 );
 
