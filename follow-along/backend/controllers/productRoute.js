@@ -162,4 +162,62 @@ productRouter.get(
   })
 );
 
+productRouter.post(
+  "/cart/increase",
+  auth,
+  catchAsyncError(async (req, res, next) => {
+    const { productId } = req.body;
+    let userId = req.user_id;
+    if (!userId) {
+      return next(new ErrorHandler("UserID is required", 400));
+    }
+    if (!mongoose.Types.ObjectId.isValid(productId)) {
+      return next(new ErrorHandler("Invalid productId", 400));
+    }
+
+    const user = await UserModel.findById(userId);
+    if (!user) {
+      return next(new ErrorHandler("User not found", 404));
+    }
+    const cartItemIndex = user.cart.findIndex((item) => item.productId.toString() === productId);
+
+    if (cartItemIndex > -1) {
+      user.cart[cartItemIndex].quantity += 1;
+      await user.save();
+      res.status(200).json({ status: true, message: "Quantity increased successfully" });
+    } else {
+      return next(new ErrorHandler("Product not found in cart", 404));
+    }
+  })
+);
+
+productRouter.post(
+  "/cart/decrease",
+  auth,
+  catchAsyncError(async (req, res, next) => {
+    const { productId } = req.body;
+    let userId = req.user_id;
+    if (!userId) {
+      return next(new ErrorHandler("UserID is required", 400));
+    }
+    if (!mongoose.Types.ObjectId.isValid(productId)) {
+      return next(new ErrorHandler("Invalid productId", 400));
+    }
+
+    const user = await UserModel.findById(userId);
+    if (!user) {
+      return next(new ErrorHandler("User not found", 404));
+    }
+    const cartItemIndex = user.cart.findIndex((item) => item.productId.toString() === productId);
+
+    if (cartItemIndex > -1 && user.cart[cartItemIndex].quantity > 1) {
+      user.cart[cartItemIndex].quantity -= 1;
+      await user.save();
+      res.status(200).json({ status: true, message: "Quantity decreased successfully" });
+    } else {
+      return next(new ErrorHandler("Product not found in cart or quantity is already 1", 404));
+    }
+  })
+);
+
 module.exports = productRouter;

@@ -346,3 +346,20 @@ File: controllers/productRoute.js Changes:
 Implemented the /cart endpoint to get the products inside the cart for a user.
 Validated the user ID to ensure it is correctly formatted.
 Retrieved the user's cart from MongoDB and populated the product details.
+
+# Milestone 19: Creating Cart Frontend Page and Managing Quantity
+In this milestone, we focused on creating a cart frontend page to display the products inside the cart. We also added options to increase and decrease the quantity of each product using + and - buttons. Additionally, we created backend endpoints to handle the increase and decrease of product quantities in the cart.
+
+1. Creating Cart Frontend Page
+File: src/pages/Cart.jsx Changes:
+
+Created a new page component to display the products inside the cart.
+Fetched cart data from the backend using Axios.
+Displayed each product with options to increase and decrease quantity.
+2. Creating Backend Endpoints for Increasing and Decreasing Quantity
+File: productRoute.js Changes:
+
+Implemented the /cart/increase endpoint to increase the quantity of a product in the user's cart.
+Implemented the /cart/decrease endpoint to decrease the quantity of a product in the user's cart.
+Validated the product ID and user ID to ensure they are correctly formatted.
+Updated the user's cart in MongoDB.
