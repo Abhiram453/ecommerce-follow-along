@@ -113,5 +113,22 @@ userRouter.post(
     res.status(200).json({ status: true, message: "Login successful", token });
   })
 );
+userRouter.get(
+  "/profile",
+  auth,
+  catchAsyncError(async (req, res, next) => {
+    const userId = req.user_id;
+    if (!userId) {
+      return next(new ErrorHandler("User ID is required", 400));
+    }
+
+    const user = await UserModel.findById(userId).populate("address");
+    if (!user) {
+      return next(new ErrorHandler("User not found", 404));
+    }
+
+    res.status(200).json({ status: true, message: user });
+  })
+);
 
 module.exports = userRouter;

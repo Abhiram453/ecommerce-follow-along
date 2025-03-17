@@ -363,3 +363,22 @@ Implemented the /cart/increase endpoint to increase the quantity of a product in
 Implemented the /cart/decrease endpoint to decrease the quantity of a product in the user's cart.
 Validated the product ID and user ID to ensure they are correctly formatted.
 Updated the user's cart in MongoDB.
+# Milestone 20: Creating Profile Page and Displaying User Data
+
+In this milestone, we focused on creating a backend endpoint to send user data and creating a frontend profile page to display the user's profile photo, name, email, and addresses.
+
+#### 1. Creating Backend Endpoint to Send User Data
+**File**: `controllers/userRoute.js`
+**Changes**:
+- Implemented the `/profile` endpoint to get user data.
+- Validated the user ID to ensure it is correctly formatted.
+- Retrieved the user's data from MongoDB and populated the address details.
+
+#### 2. Creating Frontend Profile Page
+**File**: `src/pages/Profile.jsx`
+**Changes**:
+- Created a new page component to display the user's profile photo, name, email, and addresses.
+- Fetched user data from the backend using Axios.
+- Displayed the profile photo, name, and email in one section.
+- Displayed the address in another section with an "Add Address" button.
+- Displayed "No address found" if there is no address.
