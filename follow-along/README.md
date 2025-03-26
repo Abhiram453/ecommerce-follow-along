@@ -430,4 +430,25 @@ This milestone enhances the user experience by enabling users to manage their ad
 - Prepared the form data to be sent to the backend (to be implemented in future milestones).
 
 ---
+# Milestone 22: Creating Backend Endpoint to Store Address
+
+In this milestone, we focused on creating a backend endpoint to store the address submitted from the frontend into the user's profile in the database. This endpoint receives the address data, validates it, and updates the user's address array in the database.
+
+This milestone enhances the user experience by enabling users to manage their addresses effectively.
+
+---
+
+### 1. Creating Backend Endpoint to Store Address
+**File**: `controllers/userRoute.js`  
+**Changes**:
+- Added a new `PUT` endpoint `/add-address` to receive address data from the frontend.
+- Validated the required fields: `country`, `city`, `address1`, `pincode`, and `addressType`.
+- Used the `auth` middleware to ensure the user is authenticated.
+- Updated the user's address array in the database using MongoDB's `$push` operator.
+
+---
+
+### 2. Endpoint Details
+**Endpoint**: `/user/add-address`  
+**Method**: `PUT`  
 

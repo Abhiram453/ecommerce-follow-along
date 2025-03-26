@@ -25,7 +25,7 @@ userRoute.post(
       return next(new ErrorHandler("User already exists", 400));
     }
 
-    bcrypt.hash(password, 10, async (err, hash) => {
+    bcrypt.hash(password, 5, async (err, hash) => {
       if (err) {
         return next(new ErrorHandler("Server error", 500));
       }
@@ -158,7 +158,19 @@ userRoute.put(
     if (!userId) {
       return next(new ErrorHandler("User ID not found", 400));
     }
-    let user = await UserModel.findByIdAndUpdate(userId, { $push: { address: req.body } }, { new: true });
+
+    const { country, city, address1, address2, zipCode, addressType } = req.body;
+
+    if (!country || !city || !address1 || !zipCode || !addressType) {
+      return next(new ErrorHandler("All fields are required: country, city, address1, zipCode, and addressType", 400));
+    }
+
+    let user = await UserModel.findByIdAndUpdate(
+      userId,
+      { $push: { address: { country, city, address1, address2, zipCode, addressType } } },
+      { new: true }
+    );
+
     res.status(200).json({ status: true, message: user });
   })
 );

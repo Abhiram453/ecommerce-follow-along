@@ -3,15 +3,16 @@ import React from "react";
 export default function AddressCard({
   _id,
   country,
-  state,
-  district,
+  city,
+  address,
   pincode,
-  area,
+  addressType,
 }) {
   return (
     <div className="w-full h-max bg-transparent p-5 rounded-lg border border-neutral-600 grid grid-cols-12 gap-5">
+      {/* Country */}
       <div className="col-span-12 sm:col-span-6 md:col-span-4 lg:col-span-3 xl:col-span-2">
-        <div className="w-full h-max bg-neutral-700 rounded-lg flex flex-col gap-y-2">
+        <div className="w-full h-max bg-neutral-700 rounded-lg flex flex-col gap-y-2 p-3">
           <div className="w-full h-max break-all text-xl text-neutral-200">
             Country
           </div>
@@ -20,28 +21,34 @@ export default function AddressCard({
           </div>
         </div>
       </div>
+
+      {/* City */}
       <div className="col-span-12 sm:col-span-6 md:col-span-4 lg:col-span-3 xl:col-span-2">
-        <div className="w-full h-max bg-neutral-700 rounded-lg flex flex-col gap-y-2">
+        <div className="w-full h-max bg-neutral-700 rounded-lg flex flex-col gap-y-2 p-3">
           <div className="w-full h-max break-all text-xl text-neutral-200">
-            State
+            City
           </div>
           <div className="w-full h-max break-all text-lg font-light text-neutral-200">
-            {state}
+            {city}
           </div>
         </div>
       </div>
+
+      {/* Address */}
       <div className="col-span-12 sm:col-span-6 md:col-span-4 lg:col-span-3 xl:col-span-2">
-        <div className="w-full h-max bg-neutral-700 rounded-lg flex flex-col gap-y-2">
+        <div className="w-full h-max bg-neutral-700 rounded-lg flex flex-col gap-y-2 p-3">
           <div className="w-full h-max break-all text-xl text-neutral-200">
-            District
+            Address
           </div>
           <div className="w-full h-max break-all text-lg font-light text-neutral-200">
-            {district}
+            {address}
           </div>
         </div>
       </div>
+
+      {/* Pincode */}
       <div className="col-span-12 sm:col-span-6 md:col-span-4 lg:col-span-3 xl:col-span-2">
-        <div className="w-full h-max bg-neutral-700 rounded-lg flex flex-col gap-y-2">
+        <div className="w-full h-max bg-neutral-700 rounded-lg flex flex-col gap-y-2 p-3">
           <div className="w-full h-max break-all text-xl text-neutral-200">
             Pincode
           </div>
@@ -50,13 +57,15 @@ export default function AddressCard({
           </div>
         </div>
       </div>
+
+      {/* Address Type */}
       <div className="col-span-12 sm:col-span-6 md:col-span-4 lg:col-span-3 xl:col-span-2">
-        <div className="w-full h-max bg-neutral-700 rounded-lg flex flex-col gap-y-2">
+        <div className="w-full h-max bg-neutral-700 rounded-lg flex flex-col gap-y-2 p-3">
           <div className="w-full h-max break-all text-xl text-neutral-200">
-            Area
+            Address Type
           </div>
           <div className="w-full h-max break-all text-lg font-light text-neutral-200">
-            {area}
+            {addressType}
           </div>
         </div>
       </div>
