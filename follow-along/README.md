@@ -382,3 +382,52 @@ In this milestone, we focused on creating a backend endpoint to send user data a
 - Displayed the profile photo, name, and email in one section.
 - Displayed the address in another section with an "Add Address" button.
 - Displayed "No address found" if there is no address.
+# Milestone 21: Creating Address Form
+
+In this milestone, we focused on creating a frontend form to allow users to add their address details. This form collects information such as country, city, address lines, zip code, and address type. Additionally, we implemented navigation from the profile page to the address form page when the "Add Address" button is clicked.
+
+This milestone enhances the user experience by enabling users to manage their addresses conveniently.
+
+---
+
+### 1. Creating Address Form Frontend Page
+**File**: `src/pages/AddAddress.jsx`  
+**Changes**:
+- Designed a form to collect the following address details:
+  - **Country**
+  - **City**
+  - **Address Line 1**
+  - **Address Line 2**
+  - **Zip Code**
+  - **Address Type** (e.g., Home, Work, Other)
+- Used React state to manage form inputs.
+- Styled the form using Tailwind CSS for a clean and responsive design.
+
+---
+
+### 2. Managing Address State
+**File**: `src/pages/AddAddress.jsx`  
+**Changes**:
+- Created a state object to store the input address details.
+- Implemented `onChange` handlers for each input field to update the state dynamically.
+- Added a "Save Address" button to submit the form.
+
+---
+
+### 3. Navigating to the Address Form Page
+**File**: `src/pages/Profile.jsx`  
+**Changes**:
+- Updated the "Add Address" button to navigate to the `AddAddress` page using `react-router-dom`.
+- Ensured smooth navigation between the profile page and the address form page.
+
+---
+
+### 4. Submitting the Address Form
+**File**: `src/pages/AddAddress.jsx`  
+**Changes**:
+- Added a function to handle form submission.
+- Validated the input fields to ensure all required details are provided.
+- Prepared the form data to be sent to the backend (to be implemented in future milestones).
+
+---
+
