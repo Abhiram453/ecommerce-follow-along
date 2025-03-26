@@ -9,6 +9,8 @@ import ProductPage from './pages/productPage';
 import SellerProductPage from './pages/sellerProduct';
 import Cart from './pages/Cart';
 import ProductInfo from './pages/ProductInfo';
+import Profile from './components/profile';
+
 
 function App() {
   return (
@@ -23,6 +25,7 @@ function App() {
         <Route path="/my-products" element={<SellerProductPage />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/product-info" element={<ProductInfo />} />
+        <Route path='/profile' element={<Profile/>}/>
       </Routes>
     </Router>
   );

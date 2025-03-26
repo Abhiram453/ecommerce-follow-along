@@ -6,7 +6,8 @@ import axios from "axios";
 const IndividualProduct = () => {
   const location = useLocation();
   const id = location.state.id;
-  console.log(id);
+  console.log("Product ID:", id);
+
   const [product, setProduct] = useState({});
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [quantity, setQuantity] = useState(1);
@@ -14,7 +15,9 @@ const IndividualProduct = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let response = await axios.get(`http://localhost:4534/products/individualproduct/${id}`);
+        const response = await axios.get(
+          `http://localhost:4534/products/individualproduct/${id}`
+        );
 
         if (response.status === 200) {
           setProduct(response.data.message);
@@ -41,7 +44,7 @@ const IndividualProduct = () => {
 
   const handleClick = async () => {
     try {
-      let response = await axios.post(
+      const response = await axios.post(
         "http://localhost:4534/cart",
         {
           productId: id,
@@ -53,15 +56,18 @@ const IndividualProduct = () => {
       );
 
       if (response.status === 200) {
-        console.log("Added to cart");
+        console.log("Added to cart successfully");
+        alert("Product added to cart!");
       }
     } catch (error) {
-      console.log(error);
+      console.error("Error adding to cart:", error);
+      alert("Failed to add product to cart. Please try again.");
     }
   };
 
   return (
     <div className="max-w-md mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
+      {/* Product Images */}
       {product.images && (
         <div className="relative">
           <img
@@ -71,12 +77,14 @@ const IndividualProduct = () => {
           />
           {product.images.length > 1 && (
             <>
+              {/* Left Arrow */}
               <button
                 onClick={handlePrevImage}
                 className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full"
               >
                 <FaArrowLeft />
               </button>
+              {/* Right Arrow */}
               <button
                 onClick={handleNextImage}
                 className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full"
@@ -88,9 +96,13 @@ const IndividualProduct = () => {
         </div>
       )}
 
+      {/* Product Details */}
       <div className="p-4">
         <h2 className="text-lg font-semibold">{product.name}</h2>
         <p className="text-gray-600">Price: ₹{product.price}</p>
+        <p className="text-gray-600 mt-2">{product.description}</p>
+
+        {/* Quantity Selector */}
         <div className="flex items-center mt-3">
           <label className="mr-2 font-semibold">Quantity:</label>
           <select
@@ -105,6 +117,8 @@ const IndividualProduct = () => {
             ))}
           </select>
         </div>
+
+        {/* Add to Cart Button */}
         <button
           onClick={handleClick}
           className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 w-full"

@@ -3,9 +3,9 @@ import ProductPage from "./productPage";
 
 function Home() {
   return (
-    <div>
+  
     <ProductPage />
-    </div>
+
   );
 }
 

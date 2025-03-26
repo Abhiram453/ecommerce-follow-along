@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import ProductCard from "../components/ProductCard";
+import ProductCard from "../components/productCard";
 import axios from "axios";
 
 export default function SellerProductPage() {
@@ -9,7 +9,7 @@ export default function SellerProductPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let response = await axios.get("http://localhost:4534/products/allproduct");
+        const response = await axios.get("http://localhost:4534/product/allproduct");
 
         if (response.status === 200 && response.data && Array.isArray(response.data.message)) {
           setData(response.data.message);
@@ -26,10 +26,11 @@ export default function SellerProductPage() {
 
   const dele = async (id) => {
     try {
-      let response = await axios.delete(`http://localhost:4534/products/delete/${id}`);
-      
+      const response = await axios.delete(`http://localhost:4534/product/delete/${id}`);
+
       if (response.status === 200) {
-        setDle(!dle); 
+        console.log("Product deleted successfully:", response.data);
+        setDle(!dle); // Trigger re-fetch of products
       }
     } catch (error) {
       console.error("Error deleting product:", error);
@@ -38,10 +39,15 @@ export default function SellerProductPage() {
 
   return (
     <div className="w-full min-h-screen bg-neutral-800">
-      <div className="grid grid-cols-5 gap-4 p-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 p-4">
         {data.length > 0 ? (
           data.map((product, index) => (
-            <ProductCard key={product._id || index} {...product} role={"seller"} dele={() => dele(product._id)} />
+            <ProductCard
+              key={product._id || index}
+              {...product}
+              role={"seller"}
+              dele={() => dele(product._id)}
+            />
           ))
         ) : (
           <p className="text-white text-center col-span-5">No products found.</p>

@@ -1,42 +1,43 @@
-import React, { useEffect, useState } from "react";
+import ProductCard from "../components/productCard";
+import { useEffect, useState } from "react";
 import axios from "axios";
-import ProductCard from "../components/ProductCard";
+import { useNavigate } from "react-router-dom";
 
-function ProductPage() {
-  const [products, setProducts] = useState([]);
+export default function ProductPage() {
+  const [data, setData] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let response = await axios.get("http://localhost:4534/products/allproduct");
+        const response = await axios.get("http://localhost:4534/product/allproduct");
 
         if (response.status === 200) {
-          setProducts(Array.isArray(response.data.message) ? response.data.message : []);
+          setData(response.data.message);
         }
       } catch (error) {
-        console.error("Error fetching products:", error);
+        console.log("Error fetching products:", error);
       }
     };
 
     fetchData();
   }, []);
 
+  const handleClick = (id) => {
+    navigate("/pro", { state: { id } });
+  };
+
   return (
-    <div className="container mx-auto p-8">
-      <h1 className="text-4xl font-bold text-center mb-8">Products</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {products.map((product) => (
-          <ProductCard
-            key={product._id}
-            name={product.name}
-            images={product.images.map((img) => `http://localhost:4534/products-photo/${img}`)}
-            description={product.description}
-            price={product.price}
-          />
-        ))}
+    <div className="w-full min-h-screen bg-neutral-800">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 p-4">
+        {data.length > 0 ? (
+          data.map((product, index) => (
+            <ProductCard key={product._id || index} {...product} click={() => handleClick(product._id)} />
+          ))
+        ) : (
+          <p className="text-white text-center col-span-5">No products available.</p>
+        )}
       </div>
     </div>
   );
 }
-
-export default ProductPage;

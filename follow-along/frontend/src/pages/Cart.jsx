@@ -1,97 +1,62 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import CartProduct from "../components/CartProduct";
 
 const Cart = () => {
-  const [cart, setCart] = useState([]);
+  const [products, setProducts] = useState([]);
 
   useEffect(() => {
     const fetchCart = async () => {
       try {
-        const response = await axios.get('http://localhost:4534/cart', {
-          withCredentials: true,
+        const response = await fetch(`http://localhost:4534/cart`, {
+          credentials: "include",
         });
-        setCart(response.data.message.cart);
-      } catch (error) {
-        console.error('Error fetching cart:', error);
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        setProducts(data.message.cart);
+        console.log("Products fetched:", data.message.cart);
+      } catch (err) {
+        console.error("Error fetching products:", err);
       }
     };
 
     fetchCart();
   }, []);
 
-  const handleIncreaseQuantity = async (productId) => {
-    try {
-      await axios.post(
-        'http://localhost:4534/cart/increase',
-        { productId },
-        { withCredentials: true }
-      );
-      setCart((prevCart) =>
-        prevCart.map((item) =>
-          item.productId._id === productId
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
-        )
-      );
-    } catch (error) {
-      console.error('Error increasing quantity:', error);
-    }
-  };
-
-  const handleDecreaseQuantity = async (productId) => {
-    try {
-      await axios.post(
-        'http://localhost:4534/cart/decrease',
-        { productId },
-        { withCredentials: true }
-      );
-      setCart((prevCart) =>
-        prevCart.map((item) =>
-          item.productId._id === productId && item.quantity > 1
-            ? { ...item, quantity: item.quantity - 1 }
-            : item
-        )
-      );
-    } catch (error) {
-      console.error('Error decreasing quantity:', error);
-    }
+  const updateCartQuantity = (productId, quantity) => {
+    setProducts((prevProducts) =>
+      prevProducts.map((item) =>
+        item.productId._id === productId ? { ...item, quantity } : item
+      )
+    );
   };
 
   return (
-    <div className="container mx-auto p-8">
-      <h1 className="text-4xl font-bold mb-8">Your Cart</h1>
-      {cart.length === 0 ? (
-        <p>Your cart is empty.</p>
-      ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {cart.map((item) => (
-            <div key={item.productId._id} className="bg-white p-4 rounded-lg shadow-md">
-              <img
-                src={`http://localhost:4534/products-photo/${item.productId.images[0]}`}
-                alt={item.productId.name}
-                className="w-full h-64 object-cover rounded-lg mb-4"
-              />
-              <h2 className="text-lg font-semibold">{item.productId.name}</h2>
-              <p className="text-gray-600">Price: ₹{item.productId.price}</p>
-              <div className="flex items-center mt-3">
-                <button
-                  onClick={() => handleDecreaseQuantity(item.productId._id)}
-                  className="bg-gray-300 text-gray-700 px-2 py-1 rounded-l"
-                >
-                  -
-                </button>
-                <span className="px-4 py-2 border-t border-b">{item.quantity}</span>
-                <button
-                  onClick={() => handleIncreaseQuantity(item.productId._id)}
-                  className="bg-gray-300 text-gray-700 px-2 py-1 rounded-r"
-                >
-                  +
-                </button>
-              </div>
-            </div>
-          ))}
+    <div className="w-full h-screen">
+      <div className="w-full h-full justify-center items-center flex">
+        <div className="w-full md:w-4/5 lg:w-4/6 2xl:w-2/3 h-full border-l border-r border-neutral-300 flex flex-col">
+          <div className="w-full h-16 flex items-center justify-center">
+            <h1 className="text-2xl font-semibold">Cart</h1>
+          </div>
+          {console.log(products, "pro")}
+          <div className="w-full flex-grow overflow-auto px-3 py-2 gap-y-2">
+            {products.length === 0 ? (
+              <div className="text-center text-gray-500">Your cart is empty.</div>
+            ) : (
+              products.map((product) => (
+                <CartProduct
+                  key={product._id}
+                  {...product}
+                  updateCartQuantity={updateCartQuantity}
+                />
+              ))
+            )}
+          </div>
         </div>
-      )}
+      </div>
     </div>
   );
 };

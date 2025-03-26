@@ -46,6 +46,8 @@ function Signup(props) {
         name,
         email,
         password,
+        confirmpass,
+
       });
       setSuccess("Signup successful! Please check your email for activation link.");
       setError("");

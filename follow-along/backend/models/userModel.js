@@ -1,78 +1,81 @@
-const mongoose = require("mongoose");
 
-const addressSchema = new mongoose.Schema({
-  country: {
-    type: String,
-    required: [true, "Please provide your country"]
-  },
-  state: {
-    type: String,
-    required: [true, "Please provide your state"]
-  },
-  district: {
-    type: String,
-    required: [true, "Please provide your district"]
-  },
-  pincode: {
-    type: Number,
-    required: [true, "Please provide your pincode"]
-  },
-  area: {
-    type: String
-  }
-});
+let mongoose = require("mongoose")
 
-const cartSchema = new mongoose.Schema({
-  productId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Product",
-    required: true
-  },
-  quantity: {
-    type: Number,
-    required: true,
-    min: [1, "Quantity cannot be less than 1"],
-    default: 1
-  }
-});
+const addressSchema=mongoose.Schema({
+    country:{
+        type:String,
+        required:true
+    },
+    city:{
+        type:String,
+        required:true
+    },
+    address:{
+        type:String,
+        required:true
 
-const userSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: [true, "Please provide your name"]
-  },
-  email: {
-    type: String,
-    required: [true, "Please provide your email"],
-    unique: true,
-    match: [
-      /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-      "Please add a valid email address"
-    ]
-  },
-  password: {
-    type: String,
-    required: [true, "Please provide your password"]
-  },
-  role: {
-    type: String,
-    default: "user",
-    enum: ["user", "seller", "admin"]
-  },
-  address: {
-    type: addressSchema
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now
-  },
-  isActivated: {
-    type: Boolean,
-    default: false
-  },
-  cart: [cartSchema]
-});
+    },
+    pincode:{
+        type:Number,
+        required:true
+    },
+    area:{
+        type:String
+    },
+    addressType:{
+        type:String
+    }
 
-const UserModel = mongoose.model("User", userSchema);
+})
 
-module.exports = UserModel;
+const cartSchema=mongoose.Schema({
+    
+        productId: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Product",
+          required: true,
+        },
+        quantity: {
+          type: Number,
+          required: true,
+          min: [1, "Quantity cannot be less than 1"],
+          default: 1,
+        },
+      
+})
+
+
+const userSchema =mongoose.Schema({
+    name:{
+        type:String,
+        required:true
+    },
+    email:{
+        type:String,
+        required:true
+    },
+    password:{
+        type:String,
+        required:true
+    },
+    role:{
+        type:String,
+        default:"user",
+        enum:["user","seller","admin"]
+    },
+    address:[{type:addressSchema}],
+    isActivated:{
+        type:Boolean,
+        default:false
+    },
+    cart: [cartSchema],
+    profilePhoto:{
+        type:String
+    }
+
+})
+
+
+const UserModel =mongoose.model("user",userSchema)
+
+module.exports=UserModel
