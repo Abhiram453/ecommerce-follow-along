@@ -18,7 +18,7 @@ export default function Profile() {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await axios.get("http://localhost:4534/user/checklogin", {
+        const response = await axios.get("http://localhost:8080/user/checklogin", {
           withCredentials: true,
         });
 
@@ -49,7 +49,7 @@ export default function Profile() {
 
     try {
       const response = await axios.post(
-        "http://localhost:4534/user/upload",
+        "http://localhost:8080/user/upload",
         multiPartFormData,
         {
           headers: {
@@ -84,7 +84,7 @@ export default function Profile() {
               <img
                 src={
                   profilePhoto
-                    ? `http://localhost:4534/profile-photo/${profilePhoto}`
+                    ? `http://localhost:8080/profile-photo/${profilePhoto}`
                     : `https://cdn.vectorstock.com/i/500p/17/61/male-avatar-profile-picture-vector-10211761.jpg`
                 }
                 alt="profile"
@@ -152,7 +152,7 @@ export default function Profile() {
                 No Addresses Found
               </div>
             ) : (
-              addresses.map((address, index) => (
+              addresses.map((address) => (
                 <AddressCard key={address._id} {...address} />
               ))
             )}
