@@ -452,3 +452,61 @@ This milestone enhances the user experience by enabling users to manage their ad
 **Endpoint**: `/user/add-address`  
 **Method**: `PUT`  
 
+
+# Milestone 23: Creating Place Order Button and Select Address Page
+In this milestone, we focused on creating a "Place Order" button inside the cart page and navigating to a select address page when clicked. Additionally, we created a backend endpoint to fetch all the addresses of the user.
+
+1. Place Order Button in Cart Page
+File: src/pages/Cart.jsx
+Changes:
+
+Added a "Place Order" button inside the cart page.
+Navigated to the "Select Address" page when the button is clicked using react-router-dom.
+2. Select Address Page
+File: src/pages/SelectAddress.jsx
+Changes:
+
+Created a new page to display all available addresses of the user.
+Added functionality to select one address from the list.
+Styled the page using Tailwind CSS for a clean and responsive design.
+3. Backend Endpoint to Fetch User Addresses
+File: controllers/userRoute.js
+Changes:
+
+Added a new GET endpoint /user/addresses to fetch all addresses of the authenticated user.
+Used the auth middleware to ensure the user is authenticated.
+Retrieved the user's address array from MongoDB and sent it to the frontend.
+# Milestone 24: Displaying Order Summary
+In this milestone, we focused on creating an order summary page that displays the products being ordered, the selected address, and the total value of the cart. Additionally, we added a "Place Order" button at the bottom.
+
+1. Order Summary Page
+File: src/pages/OrderSummary.jsx
+Changes:
+
+Created a new page to display the order summary.
+Displayed all the products being ordered with their details.
+Displayed the selected address for delivery.
+Displayed the total value of the cart.
+Added a "Place Order" button at the bottom.
+2. Navigation from Select Address Page
+File: src/pages/SelectAddress.jsx
+Changes:
+
+Added functionality to navigate to the "Order Summary" page after selecting an address.
+# Milestone 25: Creating Backend Endpoint to Place Order
+In this milestone, we focused on creating a backend endpoint to handle the place order functionality. This endpoint receives the products, user, and address details, and stores the order details in MongoDB.
+
+1. Backend Endpoint to Place Order
+File: controllers/userRoute.js
+Changes:
+
+Added a new POST endpoint /user/order to handle the place order functionality.
+Received the products, user, and address details from the frontend.
+Retrieved the user's email and _id from the database.
+Created a new order for each product with the same address using the orderModel.
+Stored the order details in MongoDB.
+2. Order Schema
+File: models/orderModel.js
+Changes:
+
+Used the existing orderModel to store order details such as product, quantity, price, user, and address.
