@@ -2,13 +2,13 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
-import CreateProduct from "./components/CreateProduct";
-import SellerProductPage from "./pages/SellerProductPage";
-import NavBar from "./components/Nav";
-import IndividualProduct from "./pages/IndividualProduct";
+import CreateProduct from "./pages/CreateProduct";
+import SellerProductPage from "./pages/SellerProduct";
+import NavBar from './pages/Navbar'
+import IndividualProduct from "./components/IndividualProduct";
 import Cart from "./pages/Cart";
-import Profile from "./pages/Profile";
-import Order from "./pages/Order";
+import Profile from "./components/Profile";
+import Order from "./components/Order";
 
 function App() {
   return (

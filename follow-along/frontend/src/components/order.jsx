@@ -22,7 +22,7 @@ function Order() {
 
     try {
       let response = await axios.post(
-        "http://localhost:4534/user/order",
+        "http://localhost:8080/order/place-order",
         {
           orderItems: products,
           shippingAddress: shippingAddress[0],
@@ -39,13 +39,14 @@ function Order() {
       }
     } catch (error) {
       console.error("Error placing order:", error);
+      alert("Failed to place the order. Please try again.");
     }
   };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let response = await axios.get("http://localhost:4534/product/cart", {
+        let response = await axios.get("http://localhost:8080/product/cart", {
           withCredentials: true,
         });
 

@@ -11,12 +11,13 @@ const IndividualProduct = () => {
   const [product, setProduct] = useState({});
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [quantity, setQuantity] = useState(1);
+  const [add, setAdd] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:4534/products/individualproduct/${id}`
+          `http://localhost:8080/product/individualproduct/${id}`
         );
 
         if (response.status === 200) {
@@ -45,7 +46,7 @@ const IndividualProduct = () => {
   const handleClick = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:4534/cart",
+        "http://localhost:8080/product/cart",
         {
           productId: id,
           quantity: quantity,
@@ -57,6 +58,7 @@ const IndividualProduct = () => {
 
       if (response.status === 200) {
         console.log("Added to cart successfully");
+        setAdd(true);
         alert("Product added to cart!");
       }
     } catch (error) {
@@ -71,7 +73,7 @@ const IndividualProduct = () => {
       {product.images && (
         <div className="relative">
           <img
-            src={`http://localhost:4534/products-photo/${product.images[currentImageIndex]}`}
+            src={`http://localhost:8080/products-photo/${product.images[currentImageIndex]}`}
             alt="Product"
             className="w-full h-64 object-cover"
           />
@@ -121,9 +123,13 @@ const IndividualProduct = () => {
         {/* Add to Cart Button */}
         <button
           onClick={handleClick}
-          className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 w-full"
+          className={`mt-4 px-4 py-2 rounded w-full text-white ${
+            add
+              ? "bg-blue-300 hover:bg-blue-400"
+              : "bg-blue-500 hover:bg-blue-600"
+          }`}
         >
-          Add to Cart
+          {add ? "Added To Cart" : "Add To Cart"}
         </button>
       </div>
     </div>

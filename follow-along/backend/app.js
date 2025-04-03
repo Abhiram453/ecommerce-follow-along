@@ -38,6 +38,7 @@ app.use(
 // Import Routes
 const { userRoute } = require("./controllers/userRoute");
 const productRouter = require("./controllers/productRoute");
+const orderRouter = require("./controllers/orderRoute");
 
 // Test Route
 app.get("/test", async (req, res) => {
@@ -53,6 +54,7 @@ app.use("/products-photo", express.static(path.join(__dirname, "uploadproducts")
 // Routes
 app.use("/user", userRoute);
 app.use("/product", productRouter);
+app.use("/order", orderRouter);
 
 // Error Handling Middleware
 app.use(ErrorMiddleware);

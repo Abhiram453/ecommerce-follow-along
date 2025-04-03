@@ -510,3 +510,17 @@ File: models/orderModel.js
 Changes:
 
 Used the existing orderModel to store order details such as product, quantity, price, user, and address.
+ # Milestone 26: Fetching User Orders by Email
+In this milestone, we focused on creating a backend endpoint to fetch all orders of a user based on their email. This endpoint retrieves the user's _id using their email and fetches all orders associated with that user from the database. The orders are then sent in the response.
+
+This milestone enhances the user experience by allowing users to view their order history.
+
+1. Backend Endpoint to Fetch User Orders by Email
+File: controllers/orderRoute.js
+Changes:
+
+Added a new GET endpoint /user-orders to fetch all orders of a user based on their email.
+Validated the email to ensure it is correctly formatted.
+Retrieved the user's _id from the database using their email.
+Used the _id to fetch all orders associated with the user from the orders collection.
+Sent the orders in the response.

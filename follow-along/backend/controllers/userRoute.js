@@ -1,7 +1,7 @@
 let express = require("express");
 const UserModel = require("../model/userModel");
 const catchAsyncError = require("../middleware/catchAsyncError");
-const ErrorHandler = require("../utils/errorhadler");
+const ErrorHandler = require("../utils/errorHandler");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { sendMail } = require("../utils/mail");
