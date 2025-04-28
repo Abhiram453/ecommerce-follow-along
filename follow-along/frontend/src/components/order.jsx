@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import axios from "axios";
 
 function Order() {
@@ -16,7 +17,7 @@ function Order() {
 
     let shippingAddress = address.filter((ele) => ele._id === selectedAddress);
     if (shippingAddress.length === 0) {
-      alert("Please select one shipping address");
+      alert("Please select a shipping address");
       return;
     }
 
@@ -51,7 +52,6 @@ function Order() {
         });
 
         if (response.status === 200) {
-          console.log(response.data.message);
           setCartData(response.data.message.cart);
           setAddress(response.data.message.address);
         }
@@ -104,12 +104,38 @@ function Order() {
           <p className="text-sm text-gray-600">Delivery Fee: ₹{deliveryFee}</p>
           <p className="font-semibold mt-2">Grand Total: ₹{totalPrice + deliveryFee}</p>
         </div>
+
+        {/* Cash on Delivery Button */}
         <button
+          disabled={!selectedAddress}
           onClick={handleClick}
-          className="w-full bg-blue-500 text-white p-2 rounded-lg mt-4 hover:bg-blue-600"
+          className={`w-full text-white p-2 rounded-lg mt-4 ${
+            !selectedAddress ? "bg-blue-300 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600"
+          }`}
         >
-          Place Order
+          Cash on Delivery
         </button>
+
+        {/* PayPal Section */}
+        <PayPalScriptProvider options={{ "client-id": import.meta.env.VITE_PAYPAL_CLIENT_ID }}>
+          <div className="mt-4">
+            <PayPalButtons
+              style={{ layout: "vertical" }}
+              disabled={!selectedAddress}
+              createOrder={(data, actions) => {
+                return actions.order.create({
+                  purchase_units: [{ amount: { value: totalPrice.toFixed(2) } }],
+                });
+              }}
+              onApprove={async (data, actions) => {
+                return actions.order.capture().then(async (details) => {
+                  alert(`Transaction completed by ${details.payer.name.given_name}`);
+                  await handleClick();
+                });
+              }}
+            />
+          </div>
+        </PayPalScriptProvider>
       </div>
     </div>
   );

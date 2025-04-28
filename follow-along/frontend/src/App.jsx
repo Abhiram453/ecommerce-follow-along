@@ -7,8 +7,8 @@ import SellerProductPage from "./pages/SellerProduct";
 import NavBar from './pages/Navbar'
 import IndividualProduct from "./components/IndividualProduct";
 import Cart from "./pages/Cart";
-import Profile from "./components/Profile";
-import Order from "./components/Order";
+import Profile from "./components/profile";
+import Order from "./components/order";
 
 function App() {
   return (

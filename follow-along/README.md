@@ -524,3 +524,97 @@ Validated the email to ensure it is correctly formatted.
 Retrieved the user's _id from the database using their email.
 Used the _id to fetch all orders associated with the user from the orders collection.
 Sent the orders in the response.
+
+
+
+# Milestone 27: Creating My Orders Page
+In this milestone, we focused on creating a My Orders page where users can view all their orders. The page fetches data from the /my-order endpoint using the user's email and displays the orders in a user-friendly format.
+
+1. My Orders Page
+File: src/pages/MyOrders.jsx
+Changes:
+
+Created a new page to display all user orders.
+Sent a GET request to the /my-order endpoint to fetch orders.
+Displayed the order details, including product name, quantity, price, and order status.
+2. Navigation to My Orders
+File: src/components/NavBar.jsx
+Changes:
+
+Added a My Orders link in the navigation bar for easy access.
+# Milestone 28: Cancel Order Functionality
+In this milestone, we added a Cancel Order button for each order in the My Orders page. Users can cancel orders that are not already canceled.
+
+1. Cancel Order Button
+File: src/pages/MyOrders.jsx
+Changes:
+
+Added a Cancel Order button for each order.
+The button is hidden if the order status is already Canceled.
+2. Cancel Order Endpoint
+File: controllers/orderRoute.js
+Changes:
+
+Created a new PATCH endpoint /cancel-order/:id to cancel an order.
+The endpoint receives the orderId, updates the order status to Canceled, and saves it in the database.
+# Milestone 29: Adding Payment Options
+In this milestone, we added payment options to the Order Confirmation page. Users can choose between Cash on Delivery (COD) and Online Payment.
+
+1. Payment Options
+File: src/pages/Order.jsx
+Changes:
+
+Added radio buttons to select between COD and Online Payment.
+Displayed PayPal buttons when Online Payment is selected.
+2. PayPal Sandbox Account
+Created a PayPal sandbox account and retrieved the Client ID.
+Saved the Client ID in the .env file as VITE_PAYPAL_CLIENT_ID.
+# Milestone 30: PayPal Integration
+In this milestone, we integrated PayPal for online payments using the react-paypal-js package.
+
+1. PayPal Integration
+File: src/pages/Order.jsx
+Changes:
+
+Used the PayPalScriptProvider and PayPalButtons components from the react-paypal-js package.
+Implemented the PayPal payment flow, including order creation and approval.
+2. Environment Variable
+File: .env
+Changes:
+
+Added the PayPal Client ID as VITE_PAYPAL_CLIENT_ID.
+# Milestone 31: Global State Management with Redux
+In this milestone, we implemented global state management using Redux to store the user's email.
+
+1. Store Configuration
+File: store/store.js
+Changes:
+
+Configured the Redux store with a userReducer to manage the user's email state.
+2. User Actions
+File: store/userActions.js
+Changes:
+
+Created a setEmail action to update the user's email in the global state.
+3. Wrapping the App with Provider
+File: src/index.js
+Changes:
+
+Wrapped the App component with the Provider component from react-redux and passed the store as a prop.
+Example Workflow for Milestones
+My Orders Page:
+
+Navigate to the My Orders page from the navigation bar.
+View all orders fetched from the /my-order endpoint.
+Cancel Order:
+
+Click the Cancel Order button for an order.
+The order status is updated to Canceled in the database.
+Payment Options:
+
+Select COD or Online Payment on the Order Confirmation page.
+Complete the payment using PayPal if Online Payment is selected.
+Global State Management:
+
+Store the user's email in the global state using Redux.
+Access the email across all components.

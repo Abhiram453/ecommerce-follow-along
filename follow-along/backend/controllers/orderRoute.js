@@ -1,11 +1,11 @@
 let express = require("express");
-const ProductModel = require("../model/productModel");
+const ProductModel = require("../models/productModel");
 const catchAsyncError = require("../middleware/catchAsyncError");
 const ErrorHandler = require("../utils/errorHandler");
 const orderRouter = express.Router();
-const UserModel = require("../model/userModel");
+const UserModel = require("../models/userModel");
 const auth = require("../middleware/auth");
-const orderModel = require("../model/orderModel");
+const orderModel = require("../models/orderModel");
 const mongoose = require("mongoose");
 
 // Place Order
@@ -65,7 +65,6 @@ orderRouter.post(
         return next(new ErrorHandler("Total amount must be a positive number", 400));
       }
 
-      // Order creation in parallel
       const orderPromises = orderItems.map(async (item) => {
         const totalAmount = item.price * item.quantity;
         let newOrder = new orderModel({
@@ -106,9 +105,12 @@ orderRouter.get(
       return next(new ErrorHandler("User ID not found", 400));
     }
     const orders = await orderModel
-      .find({ user: userId })
+      .find({
+        user: userId,
+        orderStatus: { $in: ["Processing", "Shipped"] },
+      })
       .populate({ path: "orderItems.product" })
-      .select("orderItems shippingAddress totalAmount createdAt");
+      .select("orderItems shippingAddress totalAmount createdAt orderStatus");
 
     res.status(200).json({
       success: true,
@@ -118,31 +120,51 @@ orderRouter.get(
 );
 
 // Cancel Order
-orderRouter.delete(
-  "/cancel-order/:orderId",
+orderRouter.patch(
+  "/cancel-order/:id",
   auth,
   catchAsyncError(async (req, res, next) => {
-    const { orderId } = req.params;
-
-    if (!orderId) {
-      return next(new ErrorHandler("Order ID is required", 400));
+    let id = req.params.id;
+    if (!id) {
+      return next(new ErrorHandler("Order ID not found", 400));
     }
 
-    const order = await orderModel.findById(orderId);
-
-    if (!order) {
-      return next(new ErrorHandler("Order not found", 404));
-    }
-
-    if (order.user.toString() !== req.user_id) {
-      return next(new ErrorHandler("You are not authorized to cancel this order", 403));
-    }
-
-    await orderModel.findByIdAndDelete(orderId);
+    await orderModel.findByIdAndUpdate(id, { orderStatus: "Cancelled" });
 
     res.status(200).json({
       success: true,
-      message: "Order canceled successfully",
+      message: "Order cancelled successfully",
+    });
+  })
+);
+
+// Get Orders by User Email
+orderRouter.get(
+  "/user-orders",
+  catchAsyncError(async (req, res, next) => {
+    const { email } = req.query;
+
+    if (!email) {
+      return next(new ErrorHandler("Email is required", 400));
+    }
+
+    const user = await UserModel.findOne({ email });
+    if (!user) {
+      return next(new ErrorHandler("User not found", 404));
+    }
+
+    const orders = await orderModel
+      .find({ user: user._id })
+      .populate({ path: "orderItems.product" })
+      .select("orderItems shippingAddress totalAmount createdAt orderStatus");
+
+    if (!orders || orders.length === 0) {
+      return next(new ErrorHandler("No orders found for this user", 404));
+    }
+
+    res.status(200).json({
+      success: true,
+      orders,
     });
   })
 );
